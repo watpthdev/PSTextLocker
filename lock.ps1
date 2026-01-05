@@ -22,13 +22,22 @@ if (-not (Test-Path $inputFile)) {
     exit
 }
 
-# Generate output file name (replace extension with .secret)
-$directory = Split-Path $inputFile -Parent
-$fileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($inputFile)
-if ([string]::IsNullOrEmpty($directory)) {
-    $outputFile = "$fileNameWithoutExt.secret"
+# Create save file dialog for output location
+$saveDialog = New-Object Microsoft.Win32.SaveFileDialog
+$saveDialog.Filter = "Secret files (*.secret)|*.secret|All files (*.*)|*.*"
+$saveDialog.Title = "Choose where to save the encrypted file"
+$saveDialog.FileName = [System.IO.Path]::GetFileNameWithoutExtension($inputFile) + ".secret"
+$saveDialog.DefaultExt = ".secret"
+$saveDialog.InitialDirectory = Split-Path $inputFile -Parent
+
+# Show save dialog
+$saveResult = $saveDialog.ShowDialog()
+
+if ($saveResult -eq $true) {
+    $outputFile = $saveDialog.FileName
 } else {
-    $outputFile = Join-Path $directory "$fileNameWithoutExt.secret"
+    Write-Host "No output location selected. Exiting..." -ForegroundColor Yellow
+    exit
 }
 
 $pass = Read-Host "Set password to lock the file" -AsSecureString
