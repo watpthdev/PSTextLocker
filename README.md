@@ -34,6 +34,9 @@ COMMIT 2
 ###
 COMMIT 3
 
+###
+COMMIT 4
+
 ### Encrypting a File (lock.ps1)
 
 1. Run the script:
