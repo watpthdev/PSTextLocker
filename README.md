@@ -31,6 +31,9 @@ This tool provides a simple and secure way to encrypt and decrypt `.txt` files, 
 ###
 COMMIT 2
 
+###
+COMMIT 3
+
 ### Encrypting a File (lock.ps1)
 
 1. Run the script:
